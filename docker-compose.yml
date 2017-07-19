@@ -12,10 +12,15 @@ services:
     volumes:
       - ~/elasticsearch/data:/usr/share/elasticsearch/data
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      VIRTUAL_HOST: "elastic.micab.co"
     networks:
       - docker_elk
     restart: unless-stopped
+    logging:
+      options:
+        max-size: "1mb"
+        max-file: "10"
   logstash:
     build: logstash/
     volumes:
@@ -30,10 +35,20 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    logging:
+      options:
+        max-size: "1mb"
+        max-file: "10"
   kibana:
     build: kibana/
     volumes:
+<<<<<<< HEAD
       - ./kibana/config/:/usr/share/kibana/config
+=======
+      - ./kibana/config/:/opt/kibana/config/
+    environment:
+      VIRTUAL_HOST: "kibana.micab.co"
+>>>>>>> Limit logging for docker containers
     ports:
       - "5601:5601"
     networks:
@@ -41,8 +56,11 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    logging:
+      options:
+        max-size: "1mb"
+        max-file: "10"
 networks:
 
   elk:
     driver: bridge
-
