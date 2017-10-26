@@ -15,7 +15,7 @@ services:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
       VIRTUAL_HOST: "elastic.micab.co"
     networks:
-      - docker_elk
+      - elk
     restart: unless-stopped
     logging:
       options:
